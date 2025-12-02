@@ -34,10 +34,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
         <!-- Java version to compile source code from -->
-        <maven.compiler.source>20</maven.compiler.source>
+        <maven.compiler.source>17</maven.compiler.source>
         
         <!-- Java version to compile source code to -->
-        <maven.compiler.target>20</maven.compiler.target>
+        <maven.compiler.target>17</maven.compiler.target>
         
         <!-- JUnit version - centralized version management -->
         <junit.version>5.10.1</junit.version>
@@ -82,14 +82,14 @@
                 <version>3.11.0</version>
                 <configuration>
                     <!-- source: Java version of source code -->
-                    <source>20</source>
+                    <source>17</source>
                     
                     <!-- target: Java version for compiled bytecode -->
-                    <target>20</target>
+                    <target>17</target>
                     
                     <!-- release: Ensures compatibility with specified Java version -->
                     <!-- Preferred over source/target as it also sets bootstrap classpath -->
-                    <release>20</release>
+                    <release>17</release>
                 </configuration>
             </plugin>
 
