@@ -34,9 +34,7 @@ sample-java-ci/
 ├── pom.xml                     # Maven configuration
 ├── Dockerfile                  # Docker image configuration
 ├── Jenkinsfile                 # Jenkins pipeline
-├── .gitlab-ci.yml             # GitLab CI/CD pipeline
-├── README.md                   # Main documentation
-└── GITLAB-SETUP.md            # GitLab setup guide
+└── README.md                   # Main documentation
 ```
 
 ### 📌 Folder & File Details
@@ -52,9 +50,7 @@ sample-java-ci/
 | `pom.xml` | Maven configuration file — dependencies, plugins, build instructions |
 | `Dockerfile` | Instructions to package the Java application into a Docker container |
 | `Jenkinsfile` | Jenkins CI/CD pipeline script to automate build, test, and Docker deployment |
-| `.gitlab-ci.yml` | GitLab CI/CD pipeline configuration for GitLab Runner |
 | `README.md` | Main documentation: project overview, setup instructions, usage |
-| `GITLAB-SETUP.md` | Detailed guide on enabling GitLab Runner and project pipeline setup |
 
 ## 🖥️ Jenkins Setup on AWS EC2 (Amazon Linux 2)
 
@@ -432,17 +428,15 @@ After running the pipeline, test results are available in:
 
 ## 🎯 Features
 
-| Feature | Jenkins | GitLab CI/CD |
-|---------|---------|--------------|
-| ✅ Java 20 Application | ✔️ | ✔️ |
-| ✅ Maven Build & Test | ✔️ | ✔️ |
-| ✅ JUnit 5 Tests | ✔️ | ✔️ |
-| ✅ Docker Image Build | ✔️ | ✔️ |
-| ✅ DockerHub Integration | ✔️ | ✔️ |
-| ✅ Automated Pipeline | ✔️ | ✔️ |
-| ✅ Automated Deployment | ✔️ | ✔️ |
-| ✅ Test Reporting | ✔️ | ✔️ |
-| ✅ Maven Wrapper | ✔️ | ✔️ |
+- ✅ Java 21 Application
+- ✅ Maven Build & Test automation
+- ✅ JUnit 5 Tests with reporting
+- ✅ Docker Image Build
+- ✅ DockerHub Integration
+- ✅ Automated Jenkins Pipeline
+- ✅ Automated Deployment
+- ✅ Test Reporting
+- ✅ Maven Wrapper included
 
 ## 🔒 Best Practices Implemented
 
