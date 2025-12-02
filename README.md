@@ -308,69 +308,7 @@ The pipeline uses:
 - **Credentials**: DockerHub credentials (ID: `dockerhub`)
 - **Docker Registry**: `registry.hub.docker.com`
 
-📘 **For Jenkins setup instructions, see main README below.**
-
----
-
-### GitLab CI/CD Pipeline
-
-The GitLab pipeline (`.gitlab-ci.yml`) automates the entire build, test, and deployment process:
-
-### Pipeline Stages
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    GitLab CI/CD Pipeline                     │
-└─────────────────────────────────────────────────────────────┘
-
-1️⃣ BUILD
-   └─> mvn clean package -DskipTests
-   └─> Generate JAR file
-   └─> Cache Maven dependencies
-
-2️⃣ TEST
-   └─> mvn test
-   └─> Run JUnit tests
-   └─> Generate test reports
-   └─> Publish JUnit test results
-
-3️⃣ DOCKER BUILD
-   └─> Build Docker image
-   └─> Tag with 'latest' and pipeline ID
-   └─> Use Docker-in-Docker (dind)
-
-4️⃣ DOCKER PUSH
-   └─> Login to DockerHub
-   └─> Push Docker image to registry
-   └─> Tag with 'latest' and pipeline ID
-
-5️⃣ DEPLOY
-   └─> Manual deployment trigger
-   └─> Stop existing container
-   └─> Run new container with latest image
-   └─> Expose on port 8080
-```
-
-### Pipeline Configuration
-
-The pipeline uses:
-- **Docker Image**: `maven:3.8.5-openjdk-21` for build and test stages
-- **Docker-in-Docker**: For building Docker images
-- **Credentials**: DockerHub credentials (CI/CD variables: `DOCKER_USERNAME`, `DOCKER_PASSWORD`)
-- **Cache**: Maven `.m2/repository` for faster builds
-- **Artifacts**: Test reports and JAR files
-
-### GitLab CI/CD Variables Required
-
-Configure these in **Settings → CI/CD → Variables**:
-
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `DOCKER_USERNAME` | Your DockerHub username | `khushalbhavsar` |
-| `DOCKER_PASSWORD` | Your DockerHub password or access token | `your-token-here` |
-| `DOCKER_IMAGE` | Docker image name | `khushalbhavsar/sample-java-ci` |
-
-**📖 Complete GitLab Setup Guide:** See [GITLAB-SETUP.md](GITLAB-SETUP.md)
+📘 **For Jenkins setup instructions, see sections below.**
 
 ---
 
@@ -440,7 +378,7 @@ After running the pipeline, test results are available in:
 
 ## 🔒 Best Practices Implemented
 
-- ✅ Use of Java 20 (modern Java version)
+- ✅ Use of Java 21 (modern Java LTS version)
 - ✅ Proper Maven project structure
 - ✅ Maven Wrapper included (no Maven installation required)
 - ✅ Unit tests with good coverage
