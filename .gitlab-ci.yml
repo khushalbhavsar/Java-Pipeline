@@ -10,6 +10,7 @@ variables:
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
   DOCKER_IMAGE: "khushalbhavsar/sample-java-ci"
   DOCKER_TAG: "latest"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
 
 cache:
   paths:
