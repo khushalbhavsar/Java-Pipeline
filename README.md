@@ -39,6 +39,103 @@ sample-java-ci/
 └── GITLAB-SETUP.md            # GitLab setup guide
 ```
 
+## 🖥️ Jenkins Setup on AWS EC2 (Amazon Linux 2)
+
+### Instance Details
+- **EC2 Type**: t3.large or c7i-flex.large
+- **Key**: jenkins.pem
+- **SG Inbound Rule**: Port 8080 Enabled
+- **User**: ec2-user
+
+### Step 1: Connect to EC2
+```bash
+cd ~/Downloads
+chmod 400 jenkins.pem
+ssh -i "jenkins.pem" ec2-user@ec2-52-204-224-228.compute-1.amazonaws.com
+```
+
+### Step 2: Install Dependencies
+```bash
+sudo yum update -y
+sudo yum install wget tar tree python -y
+```
+
+### Step 3: Install Git
+```bash
+sudo yum install git -y
+git config --global user.name "Atul Kamble"
+git config --global user.email "atul_kamble@example.com"
+git config --list
+```
+
+### Step 4: Install Docker
+```bash
+sudo yum install docker -y
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo docker login
+docker --version
+```
+**Note:** Add Jenkins user later after Jenkins installation.
+
+### Step 5: Install Maven
+```bash
+sudo yum install maven -y
+mvn -v
+```
+
+### Step 6: Install Java 21 (Amazon Corretto)
+```bash
+sudo yum install java-21-amazon-corretto.x86_64 -y
+java --version
+```
+
+### Step 7: Install Jenkins
+```bash
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+sudo yum upgrade -y
+sudo yum install fontconfig java-21-openjdk -y
+sudo yum install jenkins -y
+sudo systemctl daemon-reload
+```
+
+### Step 8: Start & Enable Jenkins
+```bash
+sudo systemctl start jenkins
+sudo systemctl enable jenkins
+jenkins --version
+```
+
+### Step 9: Allow Jenkins to Use Docker
+```bash
+sudo usermod -aG docker jenkins
+sudo systemctl restart docker
+sudo systemctl restart jenkins
+```
+
+### Get Jenkins Setup Password
+```bash
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+```
+
+### Access Jenkins in Browser
+1. Open: `http://<EC2-Public-IP>:8080`
+2. Paste password
+3. Continue Setup
+4. Install Suggested Plugins
+
+### Install Plugins Manually (If missing)
+- Docker
+- Docker Pipeline
+- Blue Ocean
+- AWS Credentials Plugin
+
+**Restart Jenkins:**
+```bash
+sudo systemctl restart jenkins
+```
+
 ## 🛠️ Prerequisites
 
 - **Java 20** or higher (JDK installed)
