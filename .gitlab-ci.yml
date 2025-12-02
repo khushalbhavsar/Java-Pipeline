@@ -21,7 +21,7 @@ cache:
 # 1️⃣ Build Stage
 build:
   stage: build
-  image: maven:3.9.6-eclipse-temurin-21
+  image: maven:3.9-eclipse-temurin-17
   script:
     - mvn -B -DskipTests clean package
   artifacts:
@@ -31,7 +31,7 @@ build:
 # 2️⃣ Test Stage
 test:
   stage: test
-  image: maven:3.9.6-eclipse-temurin-21
+  image: maven:3.9-eclipse-temurin-17
   script:
     - mvn test
   artifacts:
