@@ -80,8 +80,8 @@ sudo yum install wget tar tree python -y
 ### Step 3: Install Git
 ```bash
 sudo yum install git -y
-git config --global user.name "Atul Kamble"
-git config --global user.email "atul_kamble@example.com"
+git config --global user.name "khushalbhavsar"
+git config --global user.email "khushalbhavsar41@gmail.com"
 git config --list
 ```
 
