@@ -1,0 +1,143 @@
+# GitLab CI/CD Pipeline for Java Maven Project
+# This pipeline automates build, test, Docker image creation, and deployment
+
+# Define stages in the pipeline
+stages:
+  - build
+  - test
+  - docker-build
+  - docker-push
+  - deploy
+
+# Global variables
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  DOCKER_IMAGE: "khushalbhavsar/sample-java-ci"
+  DOCKER_TAG: "latest"
+  JAVA_VERSION: "20"
+
+# Cache Maven dependencies to speed up builds
+cache:
+  paths:
+    - .m2/repository
+    - target/
+
+# 1️⃣ Build Stage - Compile and package the application
+build:
+  stage: build
+  image: eclipse-temurin:20-jdk
+  script:
+    - echo "Building the project with Maven..."
+    - ./mvnw clean package -DskipTests
+  artifacts:
+    paths:
+      - target/*.jar
+    expire_in: 1 hour
+  tags:
+    - docker
+
+# 2️⃣ Test Stage - Run unit tests
+test:
+  stage: test
+  image: eclipse-temurin:20-jdk
+  script:
+    - echo "Running unit tests..."
+    - ./mvnw test
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - target/surefire-reports/TEST-*.xml
+  tags:
+    - docker
+
+# 3️⃣ Docker Build Stage - Build Docker image
+docker-build:
+  stage: docker-build
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  before_script:
+    - echo "Preparing Docker build..."
+  script:
+    - echo "Building Docker image..."
+    - docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
+    - docker tag $DOCKER_IMAGE:$DOCKER_TAG $DOCKER_IMAGE:$CI_PIPELINE_IID
+    - echo "Docker image built successfully"
+  tags:
+    - docker
+  only:
+    - main
+    - master
+    - develop
+
+# 4️⃣ Docker Push Stage - Push image to DockerHub
+docker-push:
+  stage: docker-push
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  before_script:
+    - echo "Logging into DockerHub..."
+    - echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+  script:
+    - echo "Rebuilding Docker image for push..."
+    - docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
+    - docker tag $DOCKER_IMAGE:$DOCKER_TAG $DOCKER_IMAGE:$CI_PIPELINE_IID
+    - echo "Pushing Docker image to DockerHub..."
+    - docker push $DOCKER_IMAGE:$DOCKER_TAG
+    - docker push $DOCKER_IMAGE:$CI_PIPELINE_IID
+    - echo "Docker image pushed successfully"
+  after_script:
+    - docker logout
+  tags:
+    - docker
+  only:
+    - main
+    - master
+  dependencies:
+    - docker-build
+
+# 5️⃣ Deploy Stage - Deploy container
+deploy:
+  stage: deploy
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  before_script:
+    - echo $DOCKERHUB_PASSWORD | docker login -u $DOCKERHUB_USERNAME --password-stdin
+  script:
+    - echo "Deploying container..."
+    # Stop and remove existing container if running
+    - docker stop sample-java-ci || true
+    - docker rm sample-java-ci || true
+    # Pull latest image
+    - docker pull $DOCKER_IMAGE:$DOCKER_TAG
+    # Run new container
+    - docker run -d --name sample-java-ci -p 8080:8080 $DOCKER_IMAGE:$DOCKER_TAG
+    - echo "Container deployed successfully"
+  after_script:
+    - docker logout
+  tags:
+    - docker
+  only:
+    - main
+    - master
+  when: manual
+  dependencies:
+    - docker-push
+
+# Code Quality Check (Optional)
+code-quality:
+  stage: test
+  image: eclipse-temurin:20-jdk
+  script:
+    - echo "Running code quality checks..."
+    - ./mvnw verify
+  allow_failure: true
+  tags:
+    - docker
+  only:
+    - merge_requests
+    - main
+    - master

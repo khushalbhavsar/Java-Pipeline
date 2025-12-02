@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+    Maven Project Object Model (POM) file
+    This file defines the project configuration, dependencies, and build settings
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    
+    <!-- POM model version - always 4.0.0 for Maven 2 and 3 -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Project Coordinates: Uniquely identifies this project -->
+    <!-- groupId: Organization or group that owns the project (reverse domain name) -->
+    <groupId>com.example</groupId>
+    
+    <!-- artifactId: The name of the project/artifact -->
+    <artifactId>sample-java-ci</artifactId>
+    
+    <!-- version: Current version of the project (follows semantic versioning) -->
+    <version>1.0.0</version>
+    
+    <!-- packaging: Type of artifact to produce (jar, war, ear, pom, etc.) -->
+    <packaging>jar</packaging>
+
+    <!-- Project Metadata -->
+    <name>sample-java-ci</name>
+    <description>Basic Java Maven project with Docker and Jenkins Pipeline</description>
+
+    <!-- Properties: Variables used throughout the POM file -->
+    <properties>
+        <!-- Character encoding for source files and output -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
+        <!-- Java version to compile source code from -->
+        <maven.compiler.source>20</maven.compiler.source>
+        
+        <!-- Java version to compile source code to -->
+        <maven.compiler.target>20</maven.compiler.target>
+        
+        <!-- JUnit version - centralized version management -->
+        <junit.version>5.10.1</junit.version>
+    </properties>
+
+    <!-- Dependencies: External libraries required by the project -->
+    <dependencies>
+        <!-- JUnit Jupiter API: Contains annotations like @Test, @BeforeEach, etc. -->
+        <!-- scope=test: Only available during test compilation and execution -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- JUnit Jupiter Engine: Test engine implementation to run JUnit 5 tests -->
+        <!-- Required at runtime to execute tests -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- Build Configuration: Defines how the project should be built -->
+    <build>
+        <!-- finalName: Name of the generated JAR file (without .jar extension) -->
+        <!-- Result: target/sample-java-ci.jar instead of target/sample-java-ci-1.0.0.jar -->
+        <finalName>sample-java-ci</finalName>
+        
+        <!-- Plugins: Tools that execute during the build lifecycle -->
+        <plugins>
+            <!-- 
+                Maven Compiler Plugin: Compiles Java source code
+                Configured to use Java 20 language features
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <!-- source: Java version of source code -->
+                    <source>20</source>
+                    
+                    <!-- target: Java version for compiled bytecode -->
+                    <target>20</target>
+                    
+                    <!-- release: Ensures compatibility with specified Java version -->
+                    <!-- Preferred over source/target as it also sets bootstrap classpath -->
+                    <release>20</release>
+                </configuration>
+            </plugin>
+
+            <!-- 
+                Maven Surefire Plugin: Executes unit tests during 'mvn test' phase
+                Automatically discovers and runs test classes (*Test.java, Test*.java, etc.)
+                Generates test reports in target/surefire-reports/
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.2</version>
+            </plugin>
+
+            <!-- 
+                Maven JAR Plugin: Creates JAR file during 'mvn package' phase
+                Configured to make the JAR executable by specifying the main class
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <!-- 
+                                mainClass: Entry point for the application
+                                Allows running: java -jar sample-java-ci.jar
+                            -->
+                            <mainClass>com.example.App</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
