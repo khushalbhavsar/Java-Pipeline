@@ -39,6 +39,23 @@ sample-java-ci/
 └── GITLAB-SETUP.md            # GitLab setup guide
 ```
 
+### 📌 Folder & File Details
+
+| File/Folder | Description |
+|-------------|-------------|
+| `src/main/java/` | Main Java application source code |
+| `App.java` | Entry point of your Java app — contains the main logic |
+| `src/test/java/` | Unit tests written using JUnit |
+| `AppTest.java` | Test cases for `App.java` |
+| `.mvn/wrapper/` | Maven Wrapper files — allow running Maven without installing it system-wide |
+| `mvnw.cmd` | Maven Wrapper script for Windows (use `mvnw` for Linux/Mac) |
+| `pom.xml` | Maven configuration file — dependencies, plugins, build instructions |
+| `Dockerfile` | Instructions to package the Java application into a Docker container |
+| `Jenkinsfile` | Jenkins CI/CD pipeline script to automate build, test, and Docker deployment |
+| `.gitlab-ci.yml` | GitLab CI/CD pipeline configuration for GitLab Runner |
+| `README.md` | Main documentation: project overview, setup instructions, usage |
+| `GITLAB-SETUP.md` | Detailed guide on enabling GitLab Runner and project pipeline setup |
+
 ## 🖥️ Jenkins Setup on AWS EC2 (Amazon Linux 2)
 
 ### Instance Details
