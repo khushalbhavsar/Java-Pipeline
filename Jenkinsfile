@@ -10,6 +10,8 @@ pipeline {
         DOCKER_IMAGE = 'khushalbhavsar/sample-java-ci'
         DOCKER_TAG = 'latest'
         DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+        DOCKERHUB_USERNAME = credentials('dockerhub-username')
+        DOCKERHUB_PASSWORD = credentials('dockerhub-password')
     }
     
     stages {
